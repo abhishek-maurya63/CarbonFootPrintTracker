@@ -1,0 +1,20 @@
+{
+  "manifest_version": 3,
+  "name": "Web Carbon Tracker",
+  "version": "0.1.0",
+  "permissions": [
+    "webRequest",
+    "storage",
+    "tabs"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  }
+}
