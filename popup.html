@@ -1,8 +1,109 @@
-<style>
-  body { font: 13px monospace; width: 340px; padding: 8px; }
-  button { margin-right: 6px; }
-</style>
-<button id="refresh">Refresh</button>
-<button id="export">Export JSON</button>
-<pre id="out">loading…</pre>
-<script src="popup.js"></script>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Segoe UI", system-ui, sans-serif;
+      font-size: 13px;
+      width: 380px;
+      padding: 12px;
+      color: #1a1a1a;
+      background: #fafafa;
+    }
+
+    /* ── Header ── */
+    .header { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+    .header h1 { font-size: 14px; font-weight: 600; }
+
+    /* ── Toolbar ── */
+    .toolbar { display: flex; gap: 6px; margin-bottom: 12px; flex-wrap: wrap; }
+    .toolbar button {
+      font-size: 12px;
+      padding: 4px 10px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background: #fff;
+      cursor: pointer;
+    }
+    .toolbar button:hover { background: #e8e8e8; }
+    .toolbar select {
+      font-size: 12px;
+      padding: 4px 6px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background: #fff;
+    }
+
+    /* ── Stats grid ── */
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+    .stat-box {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      padding: 8px 10px;
+    }
+    .stat-box .label { font-size: 11px; color: #666; }
+    .stat-box .value { font-size: 18px; font-weight: 600; margin-top: 2px; }
+    .stat-box.wide { grid-column: 1 / -1; }
+
+    /* ── Details ── */
+    pre#details {
+      font-family: "Cascadia Code", "Fira Code", monospace;
+      font-size: 11.5px;
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      padding: 10px;
+      white-space: pre-wrap;
+      word-break: break-all;
+      max-height: 260px;
+      overflow-y: auto;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 30px 10px;
+      color: #888;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <h1>🌱 Web Carbon Tracker</h1>
+  </div>
+
+  <!-- Toolbar: actions and cache state selector -->
+  <div class="toolbar">
+    <button id="refresh" title="Refresh data">↻ Refresh</button>
+    <button id="export" title="Download JSON measurement file">⬇ Export JSON</button>
+    <button id="clear" title="Clear data for this tab">✕ Clear</button>
+    <label style="display:flex; align-items:center; gap:4px; font-size:12px;">
+      Cache:
+      <!-- User picks cache state before exporting.
+           We can't detect this automatically — the user must know whether
+           they cleared the cache before this page load. -->
+      <select id="cacheState">
+        <option value="unknown">Unknown</option>
+        <option value="cold">Cold (cleared)</option>
+        <option value="warm">Warm (repeat)</option>
+      </select>
+    </label>
+  </div>
+
+  <!-- Stats boxes — filled by popup.js -->
+  <div class="stats" id="stats"></div>
+
+  <!-- Detailed breakdown -->
+  <pre id="details">loading…</pre>
+
+  <script src="popup.js"></script>
+</body>
+</html>
